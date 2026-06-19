@@ -18,7 +18,7 @@ load_dotenv()
 # Load the Groq API key
 groq_api_key = os.environ['GROQ_API_KEY']
 
-st.title("🎯 ATS Resume Score Checker")
+st.title("ATS Resume Score Checker")
 st.markdown("Analyze your resume against ATS systems and get actionable insights")
 
 # Initialize ATS Guidelines Vector Store (only once)
@@ -175,7 +175,7 @@ with col1:
     uploaded_file = st.file_uploader("Upload PDF or DOCX resume", type=["pdf", "docx"])
 
 with col2:
-    st.subheader("🎯 Target Role (Optional)")
+    st.subheader("Target Role (Optional)")
     job_title = st.text_input("Job title you're targeting (helps improve matching)")
 
 
@@ -187,7 +187,7 @@ if uploaded_file is not None:
     
     try:
         # Load resume content
-        st.info("📥 Loading resume...")
+        st.info("Loading resume...")
         loader = PyPDFLoader(tmp_file_path)
         resume_docs = loader.load()
         resume_content = "\n".join([doc.page_content for doc in resume_docs])
@@ -202,8 +202,8 @@ if uploaded_file is not None:
                 resume_content_with_context = resume_content
             
             # Analyze resume
-            if st.button("🚀 Analyze Resume", key="analyze_btn"):
-                st.info("⏳ Analyzing your resume against ATS standards...")
+            if st.button("Analyze Resume", key="analyze_btn"):
+                st.info("Analyzing your resume against ATS standards...")
                 start = time.process_time()
                 
                 response = retrieval_chain.invoke({
@@ -251,14 +251,14 @@ if uploaded_file is not None:
                         
                         # Category Breakdown
                         st.markdown("---")
-                        st.subheader("📈 Category Breakdown")
+                        st.subheader("Category Breakdown")
                         
                         categories = {
-                            "keyword_optimization": "🔑 Keyword Optimization",
-                            "formatting_and_structure": "📋 Formatting & Structure",
-                            "content_quality": "📝 Content Quality",
-                            "readability_and_clarity": "👁️ Readability & Clarity",
-                            "compliance_and_best_practices": "✅ Compliance & Best Practices"
+                            "keyword_optimization": "Keyword Optimization",
+                            "formatting_and_structure": "Formatting & Structure",
+                            "content_quality": "Content Quality",
+                            "readability_and_clarity": "Readability & Clarity",
+                            "compliance_and_best_practices": "Compliance & Best Practices"
                         }
                         
                         cols = st.columns(5)
@@ -273,7 +273,7 @@ if uploaded_file is not None:
                         
                         # Detailed Feedback
                         st.markdown("---")
-                        st.subheader("📋 Detailed Feedback")
+                        st.subheader("Detailed Feedback")
                         
                         for key, title in categories.items():
                             if key in score_data:
@@ -283,21 +283,21 @@ if uploaded_file is not None:
                         # Strengths
                         if "strengths" in score_data and score_data["strengths"]:
                             st.markdown("---")
-                            st.subheader("💪 Strengths")
+                            st.subheader("Strengths")
                             for strength in score_data["strengths"]:
                                 st.success(f"✓ {strength}")
                         
                         # Critical Issues
                         if "critical_issues" in score_data and score_data["critical_issues"]:
                             st.markdown("---")
-                            st.subheader("⚠️ Critical Issues")
+                            st.subheader("Critical Issues")
                             for issue in score_data["critical_issues"]:
                                 st.error(f"✗ {issue}")
                         
                         # Recommendations
                         if "improvement_recommendations" in score_data and score_data["improvement_recommendations"]:
                             st.markdown("---")
-                            st.subheader("🎯 Improvement Recommendations")
+                            st.subheader("Improvement Recommendations")
                             for idx, rec in enumerate(score_data["improvement_recommendations"], 1):
                                 st.info(f"{idx}. {rec}")
                 
@@ -305,7 +305,7 @@ if uploaded_file is not None:
                     st.error(f"Error parsing analysis: {str(e)}")
                 
                 # Document Similarity Search (showing context used)
-                with st.expander("📚 ATS Guidelines Context Used"):
+                with st.expander("ATS Guidelines Context Used"):
                     st.markdown("**Top matching ATS guidelines retrieved for analysis:**")
                     for i, doc in enumerate(response["context"][:3], 1):
                         st.markdown(f"**Guideline {i}:**")
@@ -320,4 +320,4 @@ if uploaded_file is not None:
             os.remove(tmp_file_path)
 
 else:
-    st.info("👆 Please upload a resume to get started with ATS analysis")
+    st.info("Please upload a resume to get started with ATS analysis")
